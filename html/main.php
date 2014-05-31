@@ -1,3 +1,7 @@
+<?php 
+session_start(); 
+?>
+
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
 <title>Logowanie</title>
@@ -14,27 +18,21 @@ $con = pg_connect($con_str);
 
 $res = pg_exec($con, $query_str);
 $nrows = pg_num_rows($res);
+pg_close($con);
 
 if ($nrows == 0) {
  echo "<center><strong>Błędny login lub hasło </center>";
-}
-else {
-  //$res = pg_fetch_array($wynik, 0);
- echo "<center><strong>Witaj ".$login." </center>";
+} else {
+
+ $_SESSION['login'] = $login;
+ $_SESSION['pass_hash'] = $pass_hash;
+
+ header('Location: admin.php');
+ 
 
 }
 
 ?>
 
-<form action="login.php" method="post">
-
-<?php
-echo "Login: <input type=text name='login' value='$login'><br><br>";
-echo "Hasło: <input type=password name='pass' value='$pass'><br><br>";
-pg_close($con);
-?>
-
-<input type=submit value="Zaloguj">
-</form>
 </body>
-</html>		
+</html>
