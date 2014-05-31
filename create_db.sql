@@ -16,8 +16,8 @@ CREATE TABLE Election (
 
 CREATE TABLE Candidate (
   idCandidate SERIAL,
-  name INTEGER NULL,
-  surname INTEGER NULL,
+  name VARCHAR NULL,
+  surname VARCHAR NULL,
   PRIMARY KEY(idCandidate)
 );
 
