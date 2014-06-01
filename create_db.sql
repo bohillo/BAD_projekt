@@ -11,6 +11,7 @@ CREATE TABLE Election (
   reg_deadline TIMESTAMP NULL,
   start_time TIMESTAMP NULL,
   end_time TIMESTAMP NULL,
+  results_published BOOLEAN NULL,
   PRIMARY KEY(idElection)
 );
 
