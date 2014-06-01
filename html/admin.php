@@ -2,7 +2,7 @@
 
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
-<title>Logowanie</title>
+<title>Strona główna</title>
 <body>
 
 <?php
@@ -25,7 +25,8 @@ else {
 echo "<p align = right><a href = logoff.php>Wyloguj</a>";
  echo "<h2>Witaj $login</h2> <br><br>";
  echo "<a href = 'add_user.php'>Zarejestruj użytkownika</a> <br>";
- echo "<a href = 'new_election.php'>Nowe wybory</a><br><br>";
+ echo "<a href = 'show_user.php'>Użytkownicy</a> <br>";
+ echo "<a href = 'add_election.php'>Nowe wybory</a><br><br>";
 
 
  $query_str = "SELECT * FROM election ORDER BY end_time DESC";
