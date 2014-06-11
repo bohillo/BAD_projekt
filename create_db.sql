@@ -17,10 +17,18 @@ CREATE TABLE Election (
 
 CREATE TABLE Candidate (
   idCandidate SERIAL,
+  idElection INTEGER NOT NULL,
   name VARCHAR NULL,
   surname VARCHAR NULL,
-  PRIMARY KEY(idCandidate)
+  CONSTRAINT pk_Candidate PRIMARY KEY(idCandidate),
+  CONSTRAINT fk_Election FOREIGN KEY(idElection)
+  REFERENCES Election(idElection)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
+
+CREATE INDEX Candidate_FKIndex1 ON Candidate(idElection);
+
 
 CREATE TABLE User_ (
   idUser_ SERIAL,
