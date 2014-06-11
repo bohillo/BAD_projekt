@@ -6,6 +6,14 @@
 <body>
 
 <?php
+
+function rand_pass( $length ) {
+
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    return substr(str_shuffle($chars),0,$length);
+
+}
+
 $login = $_SESSION['login'];
 $pass_hash = $_SESSION['pass_hash'];
 $con_str = "host=labdb dbname=mrbd user=pb305049 password=Pb_1111111";
@@ -26,6 +34,8 @@ echo "<p align = right><a href = logoff.php>Wyloguj</a>";
  
 echo "<form action='add_user.php' method='get'>";
 
+$pass = rand_pass(1);
+
 echo "Login: <input type=text name='login'><br>";
 echo "Typ u¿ytkownika: <br>";
 echo "<input type=radio name='user_type' value = 1 checked>Wyborca<br>";
@@ -38,7 +48,7 @@ if(isset($_GET['login']) && isset($_GET['user_type'])) {
  $new_login = $_GET['login'];
  $new_type = $_GET['user_type'];
 
- $query_str = "INSERT INTO user_ VALUES (DEFAULT, $new_type, '$new_login', NULL)";
+ $query_str = "INSERT INTO user_ VALUES (DEFAULT, $new_type, '$new_login', '".md5($pass)."' )";
  $res = pg_exec($con, $query_str);
 
  if(!$res) {
@@ -46,7 +56,7 @@ if(isset($_GET['login']) && isset($_GET['user_type'])) {
  }
  else
  {
- echo "U¿ytkownik dodany!";	
+ echo "U¿ytkownik dodany! Has³o u¿ytkownika: ".$pass;	
  }
 
 

@@ -8,6 +8,7 @@
 <form action="main.php" method="post">
 
 <?php
+session_destroy();
 echo "Login: <input type=text name='login'><br><br>";
 echo "Has³o: <input type=password name='pass'><br><br>";
 ?>

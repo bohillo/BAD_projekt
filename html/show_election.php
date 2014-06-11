@@ -66,23 +66,35 @@ echo "
 <td>";
 if ($row['election_status'] == 0) {
 echo "Trwa rejestracja kandydatów";
+ if ($_SESSION['user_type'] == 1) {
+  echo "<br><a href = add_candidate.php?election_id=$election_id>Zg³o¶ kandydata</a><br>";
+ }
+
 }
 elseif ($row['election_status'] == 1) {
 echo "Nierozpoczête";
 }
 elseif ($row['election_status'] == 2) {
 echo "Rozpoczête";
+ if ($_SESSION['user_type'] == 1) {
+  echo "<br><a href = vote.php?election_id=$election_id>G³osuj</a><br>";
+ }
 }
 else
 {
 echo "Zakoñczone. ";
  if ($row['results_published'] == "t") {
-  echo "<a href=show_results?election_id=$election_id>Zobacz wyniki</a>";
+  echo "<br><a href=show_results?election_id=$election_id>Zobacz wyniki</a>";
   }
- else
+ elseif ($_SESSION['user_type'] == 2)
   {
-  echo "<a href = publish_results.php?election_id=$election_id>Publikuj wyniki</a>";
+  echo "<br><a href = publish_results.php?election_id=$election_id>Publikuj wyniki</a>";
   }
+ elseif ($_SESSION['user_type'] == 1)
+  {
+  echo "<br>Oczekiwanie na publikacjê wyników";
+  }
+    
 
 }
 echo "</td> </tr> ";
@@ -96,9 +108,11 @@ echo "</table>";
 
 pg_close($con);
 
-echo "<br><a href = delete_election.php?election_id=$election_id>Usuñ wybory</a><br>";
+if ($_SESSION['user_type'] == 2) {
+ echo "<br><a href = delete_election.php?election_id=$election_id>Usuñ wybory</a><br>";
+}
 
-echo "<br><a href = admin.php>Powrót</a>";
+echo "<br><a href = main.php>Powrót</a>";
 ?>
 
 </body>

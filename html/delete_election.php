@@ -23,5 +23,5 @@ $res = pg_exec($con, $query_str);
 
 }
 
-header("Location: admin.php");
+header("Location: main.php");
 ?>
