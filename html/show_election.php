@@ -23,7 +23,15 @@ if ($nrows == 0) {
 }
 elseif (!empty($election_id)) {
 
-$query_str = "SELECT * from election WHERE idelection = $election_id";
+$query_str = "SELECT *,
+case
+when  current_timestamp < reg_deadline then 0
+when current_timestamp < start_time  then 1
+when current_timestamp < end_time  then 2
+else 3 
+end as election_status
+from election WHERE idelection = $election_id";
+
 $res = pg_exec($con, $query_str);
 $row = pg_fetch_array($res, 0);
 
@@ -55,10 +63,29 @@ echo "
 <td>".$row['end_time']."</td>
 </tr> 
 <th>Status:</th>
-<td>".$row['results_published']."</td>
-</tr> 
+<td>";
+if ($row['election_status'] == 0) {
+echo "Trwa rejestracja kandydatów";
+}
+elseif ($row['election_status'] == 1) {
+echo "Nierozpoczête";
+}
+elseif ($row['election_status'] == 2) {
+echo "Rozpoczête";
+}
+else
+{
+echo "Zakoñczone. ";
+ if ($row['results_published'] == "t") {
+  echo "<a href=show_results?election_id=$election_id>Zobacz wyniki</a>";
+  }
+ else
+  {
+  echo "<a href = publish_results.php?election_id=$election_id>Publikuj wyniki</a>";
+  }
 
-";
+}
+echo "</td> </tr> ";
 
 echo "</table>";
 
@@ -69,8 +96,7 @@ echo "</table>";
 
 pg_close($con);
 
-echo "<br><a href = publish_results.php>Publikuj wyniki</a><br>";
-echo "<br><a href = delete_election.php>Usuñ wybory</a><br>";
+echo "<br><a href = delete_election.php?election_id=$election_id>Usuñ wybory</a><br>";
 
 echo "<br><a href = admin.php>Powrót</a>";
 ?>
