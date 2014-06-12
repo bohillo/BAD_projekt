@@ -2,7 +2,7 @@
 
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
-<title>Nowy kandydat</title>
+<title>Głosowanie</title>
 <body>
 
 <?php
@@ -29,22 +29,45 @@ $nrows = pg_num_rows($res);
 $row = pg_fetch_array($res, 0);
 
  
-echo "<h2>".$row['name']." - Nowy kandydat</h2>  <br><br>";
+echo "<h2>".$row['name']." - Głosowanie</h2>  <br><br>";
  
-echo "<form action='add_candidate.php?id_election=".$_GET['election_id']."' method='get'>";
+echo "<form action='vote.php' method='get'>";
 
-echo "Imię: <input type=text name='name'><br>";
-echo "Nazwisko: <input type='text' name='surname'><br>";
+$query_str = "SELECT * from candidate  WHERE idelection = ".$_GET['election_id']."";
+$res = pg_exec($con, $query_str);
+$nrows = pg_num_rows($res); 
+$row = pg_fetch_array($res, 0);
+
+echo "
+<table border=1 align=center>
+<tr>
+<th>Imię</th>
+<th>Nazwisko</th>
+<th>Głos</th>
+</tr> ";
+
+for($ri = 0; $ri < $nrows; $ri++) {
+echo "<tr>\n";
+$row = pg_fetch_array($res, $ri);
+echo " <td>" . $row["name"] . "</td>
+<td>" . $row["surname"] . "</td>
+<td><input type = 'radio' name = 'vote' value = ".$row['idcandidate']."></input></td>
+</tr>
+";
+}
+
+echo "</table>";
 echo "<input type=hidden name='election_id' value='".$_GET['election_id']."'>";
-echo "<input type=submit value='Zgłoś'>";
+echo "<input type=submit value='Głosuj'>";
 echo "</form><br><br>";
 
-if(isset($_GET['name']) && isset($_GET['surname']))   {
- $new_name = $_GET['name'];
- $new_surname = $_GET['surname'];
- 
- $query_str = "INSERT INTO candidate VALUES (DEFAULT, ".$_GET['election_id']." , '$new_name', '$new_surname')";
- 
+
+if(isset($_GET['vote']))   {
+
+  $query_str = "INSERT INTO vote VALUES (DEFAULT, ".$_SESSION['user_id'].", ".$_GET['election_id'].", 
+ ".$_GET['vote'].", current_timestamp)";
+
+
  $res = pg_exec($con, $query_str);
 
  if(!$res) {
@@ -52,8 +75,9 @@ if(isset($_GET['name']) && isset($_GET['surname']))   {
  }
  else
  {
- echo "Kandydat zgłoszony!";	
+ echo "Glos oddany!";	
  }
+
 
 
 }
