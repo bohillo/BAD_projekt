@@ -51,7 +51,7 @@ CREATE TABLE Vote (
   idUser_ INTEGER NULL,
   idElection INTEGER NULL,
   idCandidate INTEGER NULL,
-  time DATETIME NULL,
+  time TIMESTAMP NULL,
   CONSTRAINT pk_Vote PRIMARY KEY(idVote),
 
   CONSTRAINT fk_User_ FOREIGN KEY(idUser_)
