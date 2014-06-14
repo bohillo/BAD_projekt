@@ -82,6 +82,7 @@ CREATE TABLE election (
     start_time timestamp without time zone,
     end_time timestamp without time zone,
     results_published boolean,
+    CONSTRAINT date_order_election CHECK (((reg_deadline <= start_time) AND (start_time <= end_time))),
     CONSTRAINT pos_no_pos CHECK ((no_pos > 0))
 );
 
