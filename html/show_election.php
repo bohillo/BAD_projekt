@@ -2,7 +2,7 @@
 
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
-<title>Nowy użytkownik</title>
+<title>Wybory</title>
 <body>
 
 <?php
@@ -23,14 +23,20 @@ if ($nrows == 0) {
 }
 elseif (!empty($election_id)) {
 
-$query_str = "SELECT *,
+$query_str = "SELECT te.*,
 case
 when  current_timestamp < reg_deadline then 0
 when current_timestamp < start_time  then 1
 when current_timestamp < end_time  then 2
 else 3 
-end as election_status
-from election WHERE idelection = $election_id";
+end as election_status,
+case when tv.idvote is null then 0 else 1 end as user_voted
+from 
+election te
+left join
+vote tv
+on te.idelection = tv.idelection and tv.iduser_ = ".$_SESSION['user_id']."
+WHERE te.idelection = $election_id";
 
 $res = pg_exec($con, $query_str);
 $row = pg_fetch_array($res, 0);
@@ -77,7 +83,11 @@ echo "Nierozpoczęte";
 elseif ($row['election_status'] == 2) {
 echo "Rozpoczęte";
  if ($_SESSION['user_type'] == 1) {
-  echo "<br><a href = vote.php?election_id=$election_id>Głosuj</a><br>";
+  if ($row['user_voted'] == 0) {
+     echo "<br><a href = vote.php?election_id=$election_id>Głosuj</a><br>";
+  } else {
+     echo "<br>Już głosowałeś<br>";   
+  } 
  }
 }
 else

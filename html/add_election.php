@@ -35,6 +35,8 @@ echo "Termin zakoñczenia wyborów: <input type='datetime' name='end_date'><br>";
 echo "<input type=submit value='Dodaj'>";
 echo "</form><br><br>";
 
+echo "Uwaga: daty proszê podawaæ w formacie <i>yyyy-mm-dd hh:mm</i>, np. 2011-11-24 15:26 <br><br>";
+
 if(isset($_GET['name']) && isset($_GET['no_pos'])  && isset($_GET['reg_deadline'])
 && isset($_GET['start_date']) && isset($_GET['end_date']))   {
  $new_name = $_GET['name'];
@@ -64,7 +66,7 @@ VALUES (DEFAULT, '$new_name', $new_no_pos, '$new_reg_deadline', '$new_start_date
 
 pg_close($con);
 
-echo "<br><a href = admin.php>Powrót</a>";
+echo "<br><a href = main.php>Powrót</a>";
 ?>
 
 </body>

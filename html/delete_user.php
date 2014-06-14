@@ -17,10 +17,9 @@ if ($nrows == 0) {
  echo "<a href = 'login.php'>Logowanie </a>";
 
 }
-elseif (iduser_ != $_SESSION['user_id']) {
+elseif ($delete_id != $_SESSION['user_id']) {
 $query_str = "DELETE FROM user_ WHERE iduser_ = $delete_id";
 $res = pg_exec($con, $query_str);
-
 }
 
 header("Location: show_user.php");

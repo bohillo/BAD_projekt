@@ -66,7 +66,7 @@ if(isset($_GET['login']) && isset($_GET['user_type'])) {
 
 pg_close($con);
 
-echo "<br><a href = admin.php>Powrót</a>";
+echo "<br><a href = main.php>Powrót</a>";
 ?>
 
 </body>

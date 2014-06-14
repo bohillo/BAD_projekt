@@ -18,7 +18,9 @@ if ($nrows == 0) {
 
 }
 else {
-$query_str = "DELETE FROM election WHERE idelection = $delete_id";
+$query_str = "
+SELECT delete_election($delete_id)
+";
 $res = pg_exec($con, $query_str);
 
 }
